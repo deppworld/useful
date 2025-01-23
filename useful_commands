@@ -1,0 +1,12 @@
+#To make folders from a list in excel 
+in a column type ="MD "&columnID enter and drag to end of list to apply on all rowes.
+copy and paste this list to a notepad and save sa a xyz.BAT file
+double click on xyz.BAT make the folder
+
+# to make a list from folder name
+Ctrl+A
+Right click and "copy as path"
+Paste in an excel column remove the path keep the file name
+
+
+
