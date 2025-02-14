@@ -9,4 +9,8 @@ Right click and "copy as path"
 Paste in an excel column remove the path keep the file name
 
 
+#to change the name of files in a folder
+$sudo apt install rename
+$ rename 's/^/PRE_/' * (change * with sapcific file or use for multile files)
+
 
