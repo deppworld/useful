@@ -13,4 +13,5 @@ Paste in an excel column remove the path keep the file name
 $sudo apt install rename
 $ rename 's/^/PRE_/' * (change * with sapcific file or use for multile files)
 
-
+#To change .qza to .biom
+$ qiime tools export table.qza --output-dir exported-feature-table
