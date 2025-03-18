@@ -15,3 +15,16 @@ $ rename 's/^/PRE_/' * (change * with sapcific file or use for multile files)
 
 #To change .qza to .biom
 $ qiime tools export table.qza --output-dir exported-feature-table
+
+
+##################
+To generate a series code (sequential numbering) in Excel for a column, you can use the fill handle or the SEQUENCE function. 
+
+Select the first cell: Click on the first cell in the column where you want to start the sequence. 
+Enter the formula: Type =SEQUENCE(number_of_rows,1,start_number,increment) and press Enter. 
+number_of_rows: The number of rows you want to fill with the sequence. 
+start_number: The starting number of the sequence (optional, defaults to 1). 
+increment: The increment between each number in the sequence (optional, defaults to 1). 
+Example: =SEQUENCE(10,1,1,1) will generate a sequence from 1 to 10 in 10 rows. 
+Fill down: Drag the fill handle down to fill the remaining cells with the sequence. 
+##########################################
