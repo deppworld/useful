@@ -1,0 +1,60 @@
+https://www.geeksforgeeks.org/correlation-matrix-in-r-programming/
+Gene to gene correlation:
+
+BiocManager::install("Hmisc")
+library("Hmisc")
+
+#BRCA: input text file
+
+If transpose required then transpose the table by:
+transposed_df <- data.frame(t(as.matrix(BRCA)))
+write.table(transposed_df, file = "transpose_BRCA.txt", sep = "\t", row.names = TRUE, col.names = TRUE)
+
+  # computing correlation matrix     #Syntax: rcorr (x, type = c(“pearson”, “spearman”))
+cor_data = cor(transposed_df) #input file if gene to gene correlation then keep gene in column.
+
+# computing p values of the data loaded
+p_values <- rcorr(as.matrix(transposed_df))
+print(p_values)
+
+pattern <- "LUCAT1"
+matching_columns <- grep(pattern, colnames(cor_data), value = TRUE)
+selected_columns_data_frame <- cor_data[, matching_columns]
+selected_columns_data_frame
+write.table(selected_columns_data_frame, file = "selected_columns_data_frame.txt", sep = "\t", row.names = TRUE, col.names = TRUE)
+
+#To save the files example commanda:
+write.table(cor_data, file = "cor_data_gene.txt", sep = "\t", row.names = TRUE, col.names = TRUE)
+or
+write.csv(transposed_df, "BRCA_transpose.csv", row.names=FALSE, quote=FALSE)
+
+Visualize a Correlation Matrix in R
+install.packages("corrplot")
+library("corrplot")
+
+# Correlogram in R
+# required packages
+library(corrplot)
+ 
+head(mtcars)
+# correlation matrix
+M<-cor(mtcars)
+head(round(M,2))
+ 
+# visualizing correlogram
+# as circle
+corrplot(M, method="circle")
+ 
+# as pie
+corrplot(M, method="pie")
+ 
+# as colour
+corrplot(M, method="color")
+ 
+# as number
+corrplot(M, method="number")
+
+corrplot(correlation_matrix, method="ellipse")
+
+corrplot(M, method="shade")
+
