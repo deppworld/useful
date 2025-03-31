@@ -55,5 +55,6 @@ merged_df_all1 <- merged_df_all[order(merged_df_all$ID),]
 write.table(merged_df_all, "merged_file_all.txt", sep = "\t", row.names = FALSE)
 write.table(merged_df_all1, "merged_file1.txt", sep = "\t", row.names = FALSE)
 
+Some time will provide NA on missing value. Remove NA with 0
 ###########################################################################################################
 
