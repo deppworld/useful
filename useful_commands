@@ -28,3 +28,32 @@ increment: The increment between each number in the sequence (optional, defaults
 Example: =SEQUENCE(10,1,1,1) will generate a sequence from 1 to 10 in 10 rows. 
 Fill down: Drag the fill handle down to fill the remaining cells with the sequence. 
 ##########################################
+
+##################################################################################################
+Merging and sorting
+
+library(dplyr)
+
+# Read data
+df1 <- read.csv("file1.csv")      #use example command for other than CSV or change accordinginly.
+df2 <- read.csv("file2.csv")
+
+# Merge on a common column (e.g., "ID")
+merged_df <- merge(df1, df2, by="ID", all = FALSE)  # Use all=TRUE for full join
+
+# Sort by common column
+merged_df <- merged_df[order(merged_df$ID),]
+
+# Save the output
+write.csv(merged_df, "merged_file.csv", row.names = FALSE)
+
+Example:
+df1 <- read.delim("humann.pathway-abundance_A012.txt", header = TRUE, sep = "\t")
+df2 <- read.delim("humann.pathway-abundance_A022.txt", header = TRUE, sep = "\t")
+merged_df_all <- merge(df1, df2, by="ID", all = TRUE) # Use all=TRUE for full join and FALSE for common column join
+merged_df_all1 <- merged_df_all[order(merged_df_all$ID),]
+write.table(merged_df_all, "merged_file_all.txt", sep = "\t", row.names = FALSE)
+write.table(merged_df_all1, "merged_file1.txt", sep = "\t", row.names = FALSE)
+
+###########################################################################################################
+
