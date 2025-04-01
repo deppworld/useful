@@ -1,0 +1,40 @@
+if (!require("BiocManager", quietly = TRUE))
+    install.packages("BiocManager")
+
+BiocManager::install("biobakery/maaslin3")
+
+for (lib in c('maaslin3', 'dplyr', 'ggplot2', 'knitr', 'kableExtra')) {
+    suppressPackageStartupMessages(require(lib, character.only = TRUE))
+}
+
+
+df_input_data = read.table(file             = "kpmp_all.txt",
+                           header           = TRUE,
+                           sep              = "\t",
+                           row.names        = 1,
+                           stringsAsFactors = FALSE)
+
+df_input_data[1:5, 1:5]
+
+df_input_metadata = read.table(file             = "metadata.txt",
+                               header           = TRUE,
+                               sep              = "\t",
+                               row.names        = 1,
+                               stringsAsFactors = FALSE)
+
+df_input_metadata[1:2,]
+set.seed(1)
+fit_data = maaslin3(input_data     = df_input_data,
+                    input_metadata = df_input_metadata,
+                    min_prevalence = 0,
+                    normalization = 'TSS',
+                    transform = 'LOG',
+                    augment = TRUE,
+                    standardize = TRUE,
+                    max_significance = 0.1,
+                    median_comparison_abundance = TRUE,
+                    median_comparison_prevalence = FALSE,
+                    max_pngs = 250,
+                    output         = "Grp_Res_output",
+                    fixed_effects  = c("Group"),
+                    reference      = c("Group,Healthy"))
