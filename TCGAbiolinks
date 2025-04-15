@@ -1,0 +1,41 @@
+library(TCGAbiolinks)
+library(dplyr)
+library(stringr)
+library(readr)
+
+# 1. Read sample IDs from file
+sample_ids <- read_lines("sample_ids.txt")  # Make sure this is the correct path
+
+# 2. Extract patient barcodes (first 12 characters of each TCGA ID)
+patient_ids <- unique(str_sub(sample_ids, 1, 12))
+
+# 3. Choose the TCGA project (update as needed, e.g., "TCGA-BRCA", "TCGA-LUAD")
+project <- "TCGA-BRCA"
+
+# 4. Download clinical data
+clinical <- GDCquery_clinic(project = project, type = "clinical")
+
+# 5. Get subtype data (works only for supported tumor types)
+subtypes <- TCGAquery_subtype(tumor = "BRCA")
+#Check what columns are in the subtypes object
+colnames(subtypes)
+head(subtypes)
+# 6. Merge and select relevant columns
+merged <- clinical %>%
+  filter(submitter_id %in% patient_ids) %>%
+  left_join(subtypes, by = c("submitter_id" = "patient")) %>%
+  select(submitter_id, race, ethnicity, gender, "CNV Clusters", starts_with("BRCA_Subtype_PAM50"))
+
+# 7. Write result to CSV
+write_csv(merged, "TCGA_sample_race_subtype_CNV.csv")
+
+
+#####################################################################################################################
+#to get processed data like CNV, STAR counts, etc
+library(TCGAbiolinks)
+query.maskCNV.hg39.BRCA <- GDCquery(project = "TCGA-BRCA",
+                                    data.category = "Copy Number Variation",
+                                    data.type = "Masked Copy Number Segment") #, legacy=FALSE)
+GDCdownload(query = query.maskCNV.hg39.BRCA, method = "api", files.per.chunk = 1)
+maskCNV.BRCA <- GDCprepare(query = query.maskCNV.hg39.BRCA, summarizedExperiment = FALSE)
+maskCNV.BRCA <- data.frame(maskCNV.BRCA, stringsAsFactors = FALSE)
