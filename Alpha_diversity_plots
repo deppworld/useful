@@ -1,0 +1,35 @@
+# Load necessary libraries
+library(ggplot2)
+library(readr)
+library(tidyr)
+library(ggpubr)  # For arranging plots
+
+# Load dataset
+df <- read_csv("alpha_mat.csv")
+
+# Convert Group to a factor with specific levels
+df$Group <- factor(df$Group, levels = c("fast", "slow"))
+
+# Reshape data to long format for easier faceting
+df_long <- df %>%
+  pivot_longer(cols = c(Berger_Parker_D, Chao1, Dominance, Fisher_alpha, Heip_e, Shannon_entropy, Simpson_e), 
+               names_to = "Metric", 
+               values_to = "Value")
+
+
+p <- ggplot(df_long, aes(x=Group, y=Value, fill=Group)) +
+  geom_violin(alpha=0.5, outlier.shape = NA) +  
+  geom_jitter(shape=21, color="black", width=0.2, size=3, alpha=0.5) +
+  scale_fill_manual(values=c("turquoise", "red", "purple" )) +
+  theme_minimal() +
+  theme(
+    axis.text.x = element_text(angle = 45, hjust = 1),
+    strip.text = element_text(face="bold", size=12),
+    panel.grid.major = element_line(color="gray80", linewidth=0.5),  # Add major grid lines
+    panel.grid.minor = element_line(color="gray90", linewidth=0.3),  # Add minor ghttp://127.0.0.1:22385/graphics/14088563-d98b-4f0f-8de5-599de6b0e3e2.pngrid lines
+    panel.background = element_rect(fill="white"),  # Ensure a clean background
+    plot.title = element_text(face="bold", size=16, hjust=0.5, margin=margin(10,0,10,0), color="black")  # Adds a header with a background
+  ) +
+  labs(y="Alpha Diversity Measure", title="Alpha Diversity Fast_vs_Slow-Eightweeks") +
+  facet_wrap(~Metric, scales="free_y", ncol=2)
+print(p)
