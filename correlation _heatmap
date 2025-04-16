@@ -1,0 +1,38 @@
+# Let's say your data is in a data frame called `correlation_matrix`
+## Assume your original data frame looks like this:
+# gene | pathway1 | pathway2 | ... pathway7
+#  ABC  |   0.45   |  -0.20   | ... etc.
+## Pvalue matrix in the same order
+
+library(pheatmap) 
+library(ggplot2)
+
+Assigning the 1st column as gene name. This step is important to keep only integer values in the correlation and pvalue matrix
+rownames(correlation_matrix) <- correlation_matrix[[1]]         # Set first column (gene names) as row names
+correlation_matrix <- correlation_matrix[, -1]                  # Remove first column from data (already used as rownames)
+
+#for pvale matrix
+rownames(pvalue_matrix) <- pvalue_matrix[[1]]         # Set first column (gene names) as row names
+pvalue_matrix <- pvalue_matrix1[, -1]                  # Remove first column from data (already used as rownames)
+
+Check dimension of matrix:
+
+dim(correlation_matrix1)
+dim(pvalue_matrix)
+
+#assigning * to pvalues, you can keep actual values also, which will reflect in the plot
+signif_matrix <- ifelse(pvalue_matrix < 0.001, "***",
+                        ifelse(pvalue_matrix1 < 0.01, "**",
+                               ifelse(pvalue_matrix < 0.05, "*", "")))
+# Now convert to a proper numeric matrix
+correlation_matrix <- as.matrix(correlation_matrix1)
+storage.mode(correlation_matrix) <- "numeric"
+#plot
+pheatmap(correlation_matrix,
+         display_numbers = signif_matrix,
+         number_color = "black",
+         fontsize_number = 14,
+         cluster_rows = TRUE,
+         cluster_cols = TRUE,
+         color = colorRampPalette(c("blue", "white", "red"))(100),
+         main = "Gene-Pathway Correlation")
