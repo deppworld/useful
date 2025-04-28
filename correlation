@@ -8,6 +8,25 @@ library("Hmisc")
 If transpose required then transpose the table by:
 transposed_df <- data.frame(t(as.matrix(BRCA)))
 write.table(transposed_df, file = "transpose_BRCA.txt", sep = "\t", row.names = TRUE, col.names = TRUE)
+ or
+awk '
+{
+    for (i=1; i<=NF; i++)  {
+        a[NR,i] = $i
+    }
+}
+NF>p { p = NF }
+END {
+    for(i=1; i<=p; i++) {
+        for(j=1; j<=NR; j++) {
+            printf "%s%s", a[j,i], (j==NR ? "\n" : "\t")
+        }
+    }
+}
+' yourfile.txt > transposed.txt
+
+
+
 
   
 cor_data = cor(transposed_df) #input file if gene to gene correlation then keep gene in column.
