@@ -1,0 +1,14 @@
+Index
+bowtie2-build hg19.fa hg19
+
+BAM
+bowtie2 -x hg19 \
+    -1 2021-228-004886_R1_001.fastq.gz \
+    -2 2021-228-004886_R2_001.fastq.gz \
+    -p 16 | \
+samtools sort -@ 16 -o 2021-228-004886.sorted.bam
+
+For Bai file 
+samtools index sample.sorted.bam
+
+
