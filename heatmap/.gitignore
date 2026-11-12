@@ -1,0 +1,8 @@
+__pycache__/
+*.pyc
+.venv/
+heatmap-env/
+heatmaps/
+.streamlit/secrets.toml
+.DS_Store
+Thumbs.db
